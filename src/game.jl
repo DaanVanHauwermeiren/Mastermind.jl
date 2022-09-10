@@ -1,27 +1,27 @@
 # the name is stupid, choose something better
-mutable struct Mstrmnd
+mutable struct Mstrmnd{T}
     # the board, with the shape defined in the constructor
-    board::Array{Char}
+    board::Array{T}
     # the winning combination of items from code_pegs
     # NOTE: Tuple{Vararg{Char}} means a tuple a variable number of Strings
-    solution::Tuple{Vararg{Char}}
+    solution::Tuple{Vararg{T}}
     # the current round
     round::Int
     # code_pegs is a string of possible symbols on the board
     # this could be defined as a set, but then I would have to redefine the constructor of the solution
     # so not doing that at the moment
-    code_pegs::Tuple{Vararg{Char}}
+    code_pegs::Tuple{Vararg{T}}
     scores::Vector{String}
     status::Symbol
     symbol_exactmatch::Char
     symbol_match::Char
 end
 
-function Mstrmnd(code_pegs::Tuple{Vararg{Char}}, shape::Int=4, max_guesses::Int=12,
-    symbol_exactmatch::Char='⬛', symbol_match::Char='⬜')
-    return Mstrmnd(
+function Mstrmnd(code_pegs::Tuple{Vararg{T}}, shape::Int=4, max_guesses::Int=12,
+    symbol_exactmatch::Char='⬛', symbol_match::Char='⬜') where {T}
+    return Mstrmnd{eltype(code_pegs)}(
     # init empty board
-    Array{Char}(undef, shape, max_guesses),
+    Array{eltype(code_pegs)}(undef, shape, max_guesses),
     # sample 4 times randomly from code_pegs
     code_pegs[rand(1:end, shape)],
     one(Int),
@@ -37,7 +37,7 @@ end
 check whether each of the pegs are valid: check against the allowed code_pegs field of the input Mastermind instance
 NOTE: no shape check is performed
 """
-function check_pegs(m::Mstrmnd, pegs::Tuple{Vararg{Char}})
+function check_pegs(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
     @assert all([peg in m.code_pegs for peg in pegs]) "Some pegs are not valid, check Mastermind.code_pegs"
 end
 
@@ -46,9 +46,9 @@ end
 check the shape of a guess
 just using length because of the Vector type is enforced
 """
-check_shape_guess(m::Mstrmnd, pegs::Tuple{Vararg{Char}}) = @assert length(pegs) == length(m.solution) "size $(length(pegs)) found, but $(length(game.solution)) expected"
+check_shape_guess(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T} = @assert length(pegs) == length(m.solution) "size $(length(pegs)) found, but $(length(game.solution)) expected"
 
-function score(m::Mstrmnd, pegs::Tuple{Vararg{Char}})
+function score(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
     # check exact matches at location
     exact_matches = collect(m.solution .== pegs)
     # store the scoring 
@@ -73,7 +73,7 @@ function score(m::Mstrmnd, pegs::Tuple{Vararg{Char}})
     return scoring
 end
 
-function guess!(m::Mstrmnd, pegs::Tuple{Vararg{Char}})
+function guess!(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
     # if round is larger than the shape of the board: abort because game over
     if m.round > size(m.board, 2)
         print("No more guesses possible, game over!")
