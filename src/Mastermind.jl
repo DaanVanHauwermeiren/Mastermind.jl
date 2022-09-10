@@ -6,8 +6,7 @@ export
 
 
 
-# include("game.jl")
-include("gamev2.jl")
+include("game.jl")
 include("show.jl")
 
 end
