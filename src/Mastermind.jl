@@ -1,5 +1,13 @@
 module Mastermind
 
-# Write your package code here.
+export 
+    Mstrmnd,
+    guess!
+
+
+
+# include("game.jl")
+include("gamev2.jl")
+include("show.jl")
 
 end
