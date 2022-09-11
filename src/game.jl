@@ -19,6 +19,9 @@ end
 
 function Mstrmnd(code_pegs::Tuple{Vararg{T}}, shape::Int=4, max_guesses::Int=12,
     symbol_exactmatch::Char='⬛', symbol_match::Char='⬜') where {T}
+    # NOTE: this is crappy coding here, I am checking whether the entries in code_pegs are unique
+    # the logical choice would be to use a Set as input type so that this checking can be avoided
+    @assert length(code_pegs) == length(unique(code_pegs)) "All entries in code_pegs should be unique!"
     return Mstrmnd{eltype(code_pegs)}(
     # init empty board
     Array{eltype(code_pegs)}(undef, shape, max_guesses),
