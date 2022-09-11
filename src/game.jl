@@ -46,7 +46,7 @@ end
 check the shape of a guess
 just using length because of the Vector type is enforced
 """
-check_shape_guess(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T} = @assert length(pegs) == length(m.solution) "size $(length(pegs)) found, but $(length(game.solution)) expected"
+check_shape_guess(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T} = @assert length(pegs) == length(m.solution) "size $(length(pegs)) found, but $(length(m.solution)) expected"
 
 """
 generates the score string: comparison of the input pegs with m.solution.
