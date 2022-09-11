@@ -46,6 +46,7 @@ code_pegs = Tuple([1, 2, 3])
 game = Mastermind.Mstrmnd(code_pegs)
 game.solution
 Mastermind.guess!(game, Tuple([2, 1, 1, 2]))
+Mastermind.guess!(game, [2, 1, 1, 2])
 game
 
 # code pegs defined by a tuple with different element types is not supported

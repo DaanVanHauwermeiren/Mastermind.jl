@@ -40,7 +40,7 @@ end
 check whether each of the pegs are valid: check against the allowed code_pegs field of the input Mastermind instance
 NOTE: no shape check is performed
 """
-function check_pegs(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
+function check_pegs(m::Mstrmnd{T}, pegs::Union{Tuple{Vararg{T}}, Vector{T}}) where {T}
     @assert all([peg in m.code_pegs for peg in pegs]) "Some pegs are not valid, check Mastermind.code_pegs"
 end
 
@@ -49,12 +49,12 @@ end
 check the shape of a guess
 just using length because of the Vector type is enforced
 """
-check_shape_guess(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T} = @assert length(pegs) == length(m.solution) "size $(length(pegs)) found, but $(length(m.solution)) expected"
+check_shape_guess(m::Mstrmnd{T}, pegs::Union{Tuple{Vararg{T}}, Vector{T}}) where {T} = @assert length(pegs) == length(m.solution) "size $(length(pegs)) found, but $(length(m.solution)) expected"
 
 """
 generates the score string: comparison of the input pegs with m.solution.
 """
-function score(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
+function score(m::Mstrmnd{T}, pegs::Union{Tuple{Vararg{T}}, Vector{T}}) where {T}
     # check exact matches at location
     exact_matches = collect(m.solution .== pegs)
     # store the scoring 
@@ -79,7 +79,7 @@ function score(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
     return scoring
 end
 
-function guess!(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
+function guess!(m::Mstrmnd{T}, pegs::Union{Tuple{Vararg{T}}, Vector{T}}) where {T}
     # if round is larger than the shape of the board: abort because game over
     if m.round > size(m.board, 2)
         @info "No more guesses possible, game over!"
