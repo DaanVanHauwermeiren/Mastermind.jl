@@ -17,7 +17,7 @@ mutable struct Mstrmnd{T}
     symbol_match::Char
 end
 
-function Mstrmnd(code_pegs::Tuple{Vararg{T}}, shape::Int=4, max_guesses::Int=12,
+function Mstrmnd(code_pegs::Tuple{Vararg{T}}; shape::Int=4, max_guesses::Int=12,
     symbol_exactmatch::Char='⬛', symbol_match::Char='⬜') where {T}
     # NOTE: this is crappy coding here, I am checking whether the entries in code_pegs are unique
     # the logical choice would be to use a Set as input type so that this checking can be avoided
