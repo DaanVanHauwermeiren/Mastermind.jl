@@ -67,7 +67,7 @@ function score(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
         end
     end
     if scoring == repeat(m.symbol_exactmatch, length(pegs))
-        print("Congrats, you won")
+        @info "Congrats, you won"
         m.status = :won
     end
     return scoring
@@ -76,11 +76,11 @@ end
 function guess!(m::Mstrmnd{T}, pegs::Tuple{Vararg{T}}) where {T}
     # if round is larger than the shape of the board: abort because game over
     if m.round > size(m.board, 2)
-        print("No more guesses possible, game over!")
+        @info "No more guesses possible, game over!"
         m.status = :fail
         return
     elseif m.status == :won
-        print("No need for guesses, you have won")
+        @info "No need for guesses, you have won"
         return
     end
     # check if the guess is valid in 2 steps
