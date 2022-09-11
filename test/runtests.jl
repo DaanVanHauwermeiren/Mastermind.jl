@@ -33,6 +33,15 @@ using Test
         @test game.status == :ongoing
         @test game.symbol_exactmatch == '✓'
         @test game.symbol_match == '-'
+
+        Mastermind.guess!(game, [1,1,3])
+        Mastermind.guess!(game, [2,3,3])
+        Mastermind.guess!(game, [1,3,1])
+        Mastermind.guess!(game, [1,1,2])
+        @test game.scores[1] == "✓✓"
+        @test game.scores[2] == "-"
+        @test game.scores[3] == "✓-"
+        @test game.scores[4] == "✓✓✓"
     end
 
     @testset "test info messages" begin
@@ -67,7 +76,8 @@ using Test
         ) 
         # guess something wrong 3x: no warning
         @test_nowarn Mastermind.guess!(game, Tuple([1, 1, 3]))
-        @test_nowarn Mastermind.guess!(game, Tuple([1, 1, 3]))
+        # guess but with a list instead of Tuple
+        @test_nowarn Mastermind.guess!(game, [1, 1, 3])
         @test_nowarn Mastermind.guess!(game, Tuple([1, 1, 3]))
         # test no more guesses possible
         @test_logs (:info,"No more guesses possible, game over!") Mastermind.guess!(game, Tuple([1, 1, 3]))
